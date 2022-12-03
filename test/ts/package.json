@@ -1,0 +1,21 @@
+{
+  "name": "ts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx tsc",
+    "start1": "node build/part1.js",
+    "start2": "node build/part2.js",
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@jest/globals": "^29.3.1",
+    "@types/node": "^18.11.10",
+    "ts-jest": "^29.0.3",
+    "typescript": "^4.9.3"
+  }
+}
