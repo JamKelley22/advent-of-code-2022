@@ -14,8 +14,8 @@ mkdir src
 touch src/index.ts
 
 sed -i '' -E 's/("test": "echo \\"Error: no test specified\\" && exit 1")/"build": "npx tsc",\
-\t\t"start1": "node build\/part1.js",\
-\t\t"start2": "node build\/part2.js",\
+\t\t"start1": "npm run build && node build\/part1.js",\
+\t\t"start2": "npm run build && node build\/part2.js",\
 \t\t"test": "jest"/' package.json
 
 cp ../setup/ts.gitignore .gitignore
@@ -51,3 +51,10 @@ touch README.md
 day=`basename "$PWD"`
 
 echo "# $day" >> README.md
+
+touch input.txt
+
+touch src/engine.ts
+
+# Update  tsconfig to include 
+# "exclude": ["node_modules", "build/**/*", "jest.config.js"]
