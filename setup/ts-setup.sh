@@ -53,6 +53,7 @@ day=`basename "$PWD"`
 echo "# $day" >> README.md
 
 touch input.txt
+touch input-example.txt
 
 touch src/engine.ts
 
