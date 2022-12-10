@@ -11,4 +11,5 @@ export const defaultCPU: CPU<Instruction> = {
   cyclesPerTick: 2,
   register: undefined,
   livingProcesses: Array<Instruction>(),
+  crt: Array<Array<string>>([]),
 };

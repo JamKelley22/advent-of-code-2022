@@ -23,4 +23,5 @@ export type CPU<T> = {
   cyclesPerTick: number;
   register?: T;
   livingProcesses: Array<T>;
+  crt: string[][];
 };

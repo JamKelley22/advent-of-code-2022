@@ -44,12 +44,17 @@ export const loadInstructions = (
 
 export const processInstructions = (
   cpu: CPU<Instruction>,
-  cycleDuringEvents: Map<number, (cycle: number) => void>
+  cycleDuringEvents: Map<number, (cycle: number) => void>,
+  getXReg: () => number,
+  log: boolean = false
 ): CPU<Instruction> => {
   // Begin processing instructions
   for (let cycle = 1; cpu.queue.length !== 0; cycle++) {
+    const col = cycle % 40;
+    const row = Math.floor(cycle / 40);
+
     // Start cycle
-    console.log(`Cycle: ${cycle}`);
+    if (log) console.log(`Cycle: ${cycle}`);
 
     if (!cpu.register) {
       // Load instruction
@@ -63,6 +68,15 @@ export const processInstructions = (
 
     // === During ===
     cycleDuringEvents.get(cycle)?.(cycle);
+    // Print CRT
+    const startXSprite = getXReg();
+    if (col >= startXSprite && col < startXSprite + 3) {
+      if (!cpu.crt[row]) cpu.crt[row] = [];
+      cpu.crt[row].push("*");
+    } else {
+      if (!cpu.crt[row]) cpu.crt[row] = [];
+      cpu.crt[row].push(" ");
+    }
 
     //   cpu.livingProcesses.push(cpu.register);
 

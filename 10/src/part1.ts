@@ -28,9 +28,9 @@ try {
       if (instructionType === "addx") {
         total += value || 0;
       }
-      console.log(
-        `===Finished: ${instructionType}.\tValue: ${value}.\tTotal: ${total}`
-      );
+      //   console.log(
+      //     `===Finished: ${instructionType}.\tValue: ${value}.\tTotal: ${total}`
+      //   );
     })
   );
 
@@ -45,49 +45,63 @@ try {
       [
         20,
         (cycle) => {
-          console.log(total, total * cycle);
+          //   console.log(total, total * cycle);
           final += total * cycle;
         },
       ],
       [
         60,
         (cycle) => {
-          console.log(total, total * cycle);
+          //   console.log(total, total * cycle);
           final += total * cycle;
         },
       ],
       [
         100,
         (cycle) => {
-          console.log(total, total * cycle);
+          //   console.log(total, total * cycle);
           final += total * cycle;
         },
       ],
       [
         140,
         (cycle) => {
-          console.log(total, total * cycle);
+          //   console.log(total, total * cycle);
           final += total * cycle;
         },
       ],
       [
         180,
         (cycle) => {
-          console.log(total, total * cycle);
+          //   console.log(total, total * cycle);
           final += total * cycle;
         },
       ],
       [
         220,
         (cycle) => {
-          console.log(total, total * cycle);
+          //   console.log(total, total * cycle);
           final += total * cycle;
         },
       ],
-    ])
+    ]),
+    () => total
   );
 
-  console.log(final);
+  let _str = "";
+
+  for (let rowI = 0; rowI < cpu.crt.length; rowI++) {
+    for (let colI = 0; colI < cpu.crt[rowI].length; colI++) {
+      const str: string = cpu.crt[rowI][colI];
+      _str += str;
+    }
+    _str += "\n";
+  }
+
+  console.log(_str);
+  console.log(cpu.crt[0].length);
+
+  //   console.log(final);
 } catch (e: any) {
   console.log("Error:", e.stack);
 }

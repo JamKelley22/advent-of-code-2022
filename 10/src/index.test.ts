@@ -40,6 +40,7 @@ const oracle: {
           cyclesPerTick: defaultCPU.cyclesPerTick,
           register: undefined,
           livingProcesses: [],
+          crt: [[]],
         },
       ],
     },
