@@ -12,10 +12,10 @@ export const defaultStartRopeMap: RopeMap = {
       true,
     ],
   ]),
-  map: new Map<string, Space>([
+  map: new Map<string, Space[]>([
     [
       `[${[defaultStartLocation.row, defaultStartLocation.col].toString()}]`,
-      "Both",
+      ["Head", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
     ],
   ]),
 };
