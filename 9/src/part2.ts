@@ -17,7 +17,7 @@ const inputs = [
 ];
 
 try {
-  const input = inputs[1];
+  const input = inputs[0];
   const data: string = fs.readFileSync(input.fileName, "utf8").toString();
   const lines = data.split(/\r?\n/).filter((line) => line.length);
 

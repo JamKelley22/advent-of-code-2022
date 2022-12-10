@@ -7,19 +7,19 @@ export const moveHeadAndTail = (
   //   const tailVisitedMap = new Map<string, boolean>();
   //   const ropeMapMap = new Map<string, Space[]>();
 
-  console.log("== Initial State ==");
-  console.log();
+  //   console.log("== Initial State ==");
+  //   console.log();
 
-  console.log(printMap(ropeMap.map));
-  console.log();
+  //   console.log(printMap(ropeMap.map));
+  //   console.log();
 
   const endRopeMap = headMotions.reduce(
     (ropeMap, motion) => {
-      const newRopeMap = applyMotion(ropeMap, motion);
-      console.log(`== ${motion.dir} ${motion.numSteps} ==`);
-      console.log();
+      //   console.log(`== ${motion.dir} ${motion.numSteps} ==`);
+      const newRopeMap = applyMotion(ropeMap, motion, false);
+      //   console.log();
 
-      console.log(printMap(newRopeMap.map));
+      //   console.log(printMap(newRopeMap.map));
       return newRopeMap;
     },
     {
@@ -28,13 +28,21 @@ export const moveHeadAndTail = (
     }
   );
 
+  //   console.log(
+  //     [...endRopeMap.map].filter((a) => locationFromKey(a[0]).col === -11)
+  //   );
+
   return {
     tailVisitedMap: endRopeMap.tailVisitedMap,
     map: endRopeMap.map,
   };
 };
 
-export const applyMotion = (ropeMap: RopeMap, headMotion: Motion): RopeMap => {
+export const applyMotion = (
+  ropeMap: RopeMap,
+  headMotion: Motion,
+  log: boolean = false
+): RopeMap => {
   // Array.from(Array(10)).map(a => dirToMove(headMotion.dir));
 
   // Find the head and tail
@@ -63,7 +71,7 @@ export const applyMotion = (ropeMap: RopeMap, headMotion: Motion): RopeMap => {
         space: "Head",
       });
 
-      //   console.log(`H: \n${printMap(updatedRopeMap.map)}`);
+      if (log) console.log(`H: \n${printMap(updatedRopeMap.map)}`);
 
       // ===1===
       const spaceLocation1 = getLocation("1", updatedRopeMap.map);
@@ -84,9 +92,7 @@ export const applyMotion = (ropeMap: RopeMap, headMotion: Motion): RopeMap => {
         });
       }
 
-      //   console.log(`1: \n${printMap(updatedRopeMap.map)}`);
-
-      let prevUpdatedKnotLocation: Location = newSpaceLocation1;
+      if (log) console.log(`1: \n${printMap(updatedRopeMap.map)}`);
 
       for (let knotNum = 2; knotNum < 10; knotNum++) {
         const spaceKnotNum = knotNum.toString() as Space;
@@ -95,7 +101,7 @@ export const applyMotion = (ropeMap: RopeMap, headMotion: Motion): RopeMap => {
         let newSpaceLocation = spaceLocation;
         const move = getMoveFromLocations(
           spaceLocation,
-          prevUpdatedKnotLocation
+          getLocation((knotNum - 1).toString() as Space, updatedRopeMap.map)
         );
         newSpaceLocation = addMoveToLocation(spaceLocation, move);
         updatedRopeMap.map = removeSpace(updatedRopeMap.map, {
@@ -107,17 +113,15 @@ export const applyMotion = (ropeMap: RopeMap, headMotion: Motion): RopeMap => {
           space: spaceKnotNum,
         });
 
-        prevUpdatedKnotLocation = newSpaceLocation;
-
         if (knotNum === 9)
           updatedRopeMap.tailVisitedMap.set(
             keyFromLocation(newSpaceLocation),
             true
           );
-        // console.log(`${knotNum}: \n${printMap(updatedRopeMap.map)}`);
+        if (log) console.log(`${knotNum}: \n${printMap(updatedRopeMap.map)}`);
       }
       //   console.log("==========================");
-      //   console.log(printMap(updatedRopeMap.map));
+      if (log) console.log(printMap(updatedRopeMap.map));
 
       return updatedRopeMap;
     },
@@ -141,13 +145,22 @@ export const getMoveFromLocations = (
   currentLocation: Location,
   moveToLocation: Location
 ): Move => {
-  if (moveToLocation.row - currentLocation.row === 2) {
+  if (
+    Math.abs(moveToLocation.row - currentLocation.row) === 2 &&
+    Math.abs(moveToLocation.col - currentLocation.col) === 2
+  ) {
+    return {
+      rowChange: subtractToZero(moveToLocation.row - currentLocation.row),
+      colChange: subtractToZero(moveToLocation.col - currentLocation.col),
+    };
+  }
+  if (Math.abs(moveToLocation.row - currentLocation.row) === 2) {
     return {
       rowChange: subtractToZero(moveToLocation.row - currentLocation.row),
       colChange: moveToLocation.col - currentLocation.col,
     };
   }
-  if (moveToLocation.col - currentLocation.col === 2) {
+  if (Math.abs(moveToLocation.col - currentLocation.col) === 2) {
     return {
       rowChange: moveToLocation.row - currentLocation.row,
       colChange: subtractToZero(moveToLocation.col - currentLocation.col),
