@@ -3,7 +3,10 @@ import {
   adjustWorryLevelAtNoDamage,
   applyOperation,
   applyTest,
+  divide,
+  findLCM,
   getTarget,
+  multiply,
 } from "./engine";
 import { Conditional, Item, Monkey, Operation, Test } from "./types";
 
@@ -16,6 +19,14 @@ const oracle: {
   adjustWorryLevelAtNoDamage: { item: Item; ans: Item }[];
   applyTest: { test: Test; item: Item; ans: boolean }[];
   getTarget: { conditional: Conditional; testRes: boolean; ans: number }[];
+  lcm: { nums: number[]; ans: number }[];
+  multiply: { num1: number; num2: number; mod: number; ans: number }[];
+  divide: {
+    numerator: number;
+    denominator: number;
+    mod: number;
+    ans: number;
+  }[];
 } = {
   applyOp: [
     {
@@ -76,6 +87,18 @@ const oracle: {
       ans: 10,
     },
   ],
+  lcm: [
+    { nums: [1, 2, 3], ans: 6 },
+    { nums: [5, 10, 15], ans: 30 },
+  ],
+  multiply: [
+    { num1: 2, num2: 3, mod: 10, ans: 6 },
+    { num1: 4, num2: 3, mod: 10, ans: 2 },
+  ],
+  divide: [
+    { numerator: 10, denominator: 2, mod: 10, ans: 5 },
+    { numerator: 10, denominator: 1, mod: 10, ans: 0 },
+  ],
 };
 
 describe("part1", () => {
@@ -117,7 +140,27 @@ describe("part1", () => {
 });
 
 describe("part2", () => {
-  test("calculates example line 1", () => {
-    expect(1 + 1).toBe(2);
+  test("Calculates LCM (all)", () => {
+    const tests = oracle.lcm;
+    tests.forEach((test) => {
+      const res = findLCM(test.nums);
+      expect(res).toBe(test.ans);
+    });
+  });
+
+  test("Calculates Multiply with Mod (all)", () => {
+    const tests = oracle.multiply;
+    tests.forEach((test) => {
+      const res = multiply(test.num1, test.num2, test.mod);
+      expect(res).toBe(test.ans);
+    });
+  });
+
+  test("Calculates Divide with Mod (all)", () => {
+    const tests = oracle.divide;
+    tests.forEach((test) => {
+      const res = divide(test.numerator, test.denominator, test.mod);
+      expect(res).toBe(test.ans);
+    });
   });
 });

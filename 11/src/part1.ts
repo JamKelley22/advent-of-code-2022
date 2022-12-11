@@ -28,7 +28,7 @@ try {
     parseMonkeyFromStrArr(monkeyStrArr)
   );
 
-  const numRounds = 20;
+  const numRounds = 10000;
 
   for (let round = 0; round < numRounds; round++) {
     // Monkey 0:

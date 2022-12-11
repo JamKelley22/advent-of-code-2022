@@ -12,7 +12,7 @@ import util from "util";
 export const getMonkeyStringArraysFromInput = (input: string) => {
   const lines = input.split(/\r?\n/);
   return lines.reduce(
-    (obj, line, i) => {
+    (obj, line) => {
       if (line.length === 0) {
         return {
           ...obj,
@@ -87,11 +87,15 @@ export const parseMonkeyFromStrArr = (monkeyStrArr: string[]): Monkey => {
   };
 };
 
-export const applyOperation = (op: Operation, item: Item): number => {
+export const applyOperation = (
+  op: Operation,
+  item: Item,
+  mod?: number
+): number => {
   switch (op.opCode) {
     case "*":
       const multiplier = op.num === "old" ? item.worryLevel : op.num;
-      return item.worryLevel * multiplier;
+      return multiply(item.worryLevel, multiplier, mod);
     case "+":
       const addition = op.num === "old" ? item.worryLevel : op.num;
       return item.worryLevel + addition;
@@ -102,9 +106,9 @@ export const applyOperation = (op: Operation, item: Item): number => {
   }
 };
 
-export const inspectItem = (monkey: Monkey, item: Item): Item => {
+export const inspectItem = (monkey: Monkey, item: Item, lcm?: number): Item => {
   const newWorryLevel = monkey.operation.reduce((newWorryLevel, op) => {
-    return newWorryLevel + applyOperation(op, item);
+    return newWorryLevel + applyOperation(op, item, lcm);
   }, 0);
   return {
     worryLevel: newWorryLevel,
@@ -155,4 +159,44 @@ export const monkeysToString = (monkeys: Monkey[]): string => {
     };
   });
   return util.inspect(trimmedMonkeys, false, null, true /* enable colors */);
+};
+
+export function gcd(a: number, b: number): number {
+  return !b ? a : gcd(b, a % b);
+}
+
+// Partly from Accepted answer https://stackoverflow.com/questions/31302054/how-to-find-the-least-common-multiple-of-a-range-of-numbers
+// StackOverflow user: rgbchris (https://stackoverflow.com/users/1613023/rgbchris)
+export const findLCM = (nums: number[]): number => {
+  if (nums.includes(0))
+    throw new Error(
+      `The LCM of zero does not exist. Remove 0's and try again.`
+    );
+
+  //   return nums.reduce((acc, num) => acc * num);
+  const min = nums.sort()[0];
+
+  function lcm(a: number, b: number): number {
+    return (a * b) / gcd(a, b);
+  }
+
+  var multiple = min;
+  nums.forEach(function (n) {
+    multiple = lcm(multiple, n);
+  });
+
+  return multiple;
+};
+
+export const multiply = (num1: number, num2: number, mod?: number): number => {
+  if (!mod) return num1 * num2;
+  return (num1 * num2) % mod;
+};
+export const divide = (
+  numerator: number,
+  denominator: number,
+  mod?: number
+): number => {
+  if (!mod) return numerator / denominator;
+  return (numerator / denominator) % mod;
 };
