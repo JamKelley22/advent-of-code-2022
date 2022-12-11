@@ -38,33 +38,34 @@ try {
 
   for (let round = 0; round < numRounds; round++) {
     if (log) console.log(`============== Round ${round} =============`);
-    // const lcm = findLCM(monkeys.map((monkey) => monkey.test.number));
     for (let monkeyNum = 0; monkeyNum < monkeys.length; monkeyNum++) {
+      const lcm = findLCM(monkeys.map((monkey) => monkey.test.number));
       let logStr = "";
       const monkey = monkeys[monkeyNum];
       logStr += `Monkey ${monkey.id}\n`;
       // Monkey turn
+      if (log) console.log(monkey.id, monkey.items.length);
       while (monkey.items.length > 0) {
         const item = monkey.items.shift();
         logStr += `  Monkey inspects an item with a worry level of ${item?.worryLevel}.\n`;
         // =Inspect Item
-        const inspectedItem = inspectItem(monkey, item!); // Applies op in inspectItem
+        const inspectedItem = inspectItem(monkey, item!, lcm); // Applies op in inspectItem
         monkey.numInspectedItems++;
         logStr += `    Worry level is ${monkey.operation[0].opCode} by ${monkey.operation[0].num} to ${inspectedItem.worryLevel}.\n`;
-        // =Adjust Worry Level at Seeing No Damage
-        const adjustedItem = adjustWorryLevelAtNoDamage(inspectedItem);
-        logStr += `    Monkey gets bored with item. Worry level is divided by 3 to ${adjustedItem.worryLevel}.\n`;
+        // // =Adjust Worry Level at Seeing No Damage
+        // const adjustedItem = adjustWorryLevelAtNoDamage(inspectedItem);
+        // logStr += `    Monkey gets bored with item. Worry level is divided by 3 to ${adjustedItem.worryLevel}.\n`;
         // =Find next monkey
-        const testRes = applyTest(monkey.test, adjustedItem);
+        const testRes = applyTest(monkey.test, inspectedItem);
         logStr += `    Current worry level is ${
           testRes ? "" : "not"
         } divisible by ${monkey.test.number}.\n`;
         const targetMonkeyId = getTarget(monkey.test.conditional, testRes);
         // =Take Action (throw)
-        monkeys[targetMonkeyId].items.push(adjustedItem);
-        logStr += `    Item with worry level ${adjustedItem.worryLevel} is thrown to monkey ${targetMonkeyId}.\n`;
+        monkeys[targetMonkeyId].items.push(inspectedItem);
+        logStr += `    Item with worry level ${inspectedItem.worryLevel} is thrown to monkey ${targetMonkeyId}.\n`;
       }
-      //   console.log(logStr);
+      if (log) console.log(logStr);
       logStr = "";
     }
     if (log) console.log(monkeysToString(monkeys));

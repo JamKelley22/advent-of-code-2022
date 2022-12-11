@@ -20,7 +20,7 @@ var inputs = [
 ];
 
 try {
-  const input = inputs[0];
+  const input = inputs[1];
   const data: string = fs.readFileSync(input.fileName, "utf8").toString();
   const monkeyStringArrays = getMonkeyStringArraysFromInput(data);
 
@@ -28,7 +28,7 @@ try {
     parseMonkeyFromStrArr(monkeyStrArr)
   );
 
-  const numRounds = 10000;
+  const numRounds = 20;
 
   for (let round = 0; round < numRounds; round++) {
     // Monkey 0:
