@@ -16,7 +16,7 @@ var inputs = [
 ];
 
 try {
-  const input = inputs[0];
+  const input = inputs[1];
   const data: string = fs.readFileSync(input.fileName, "utf8").toString();
   const grid = parseGrid(data);
   const graph = createGraph(grid);
