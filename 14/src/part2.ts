@@ -52,7 +52,7 @@ try {
     }
   }
 
-  //   console.log(caveStr);
+  console.log(caveToString(updatedCave));
 } catch (e: any) {
   console.log("Error:", e.stack);
 }

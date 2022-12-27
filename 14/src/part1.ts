@@ -41,7 +41,7 @@ try {
   for (let index = 0; index < 1000000; index++) {
     const { cave, intoAbyss } = simulateSandDrop(updatedCave);
     updatedCave = cave;
-    // console.log(caveToString(updatedCave));
+    console.log(caveToString(updatedCave));
     if (intoAbyss) {
       console.log(index, true);
       break;
